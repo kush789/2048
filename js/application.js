@@ -7,17 +7,17 @@ window.requestAnimationFrame(function () {
 	function AI() {
 	    setTimeout(function () {
 
-	    	var future = 3;
+	    	var future = 0;
 
-	    	// if (game.grid.availableCells().length <= 4)
-	    	// 	future = 4;
-
-			game.move(game.getBestMove(future));
+	    	if (game.grid.availableCells().length < 4)
+	    		future = 6;
+	    	else
+	    		future = 4;
+			game.move(game.getBestMove(game.grid, future));
 
 			AI();
 
 	    }, 50);
 	}
-
 	AI();
 });

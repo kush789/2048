@@ -1,99 +1,84 @@
+var BOARD = 1;
+var PLAYER = 0;
 
-function getBestScore(depth, grid) {
+GameManager.prototype.getBestMove = function(grid, depth)
+{
+    var score = Number.MIN_VALUE;
+    var bestMove = -1;
 
-  if (depth === 1)
-    return {"moved" : true, "score" : grid.getScore()};
-
-  var maxScore = -999999;
-
-  for (var i = 0; i < 4; i++)
-  {
-    var score = 0;
-    var newGrid = grid.clone();
-    var moved = newGrid.move(i);
-
-    if (moved === false) {
-      continue;
-    }
-
-    var cells = newGrid.availableCells();
-    var totalCells = cells.length;
-
-    if (totalCells === 0)
-      return maxScore;
-
-    for (var k = 0; k < totalCells; k ++)
+    for (var i = 0; i < 4; i ++)
     {
-      anotherNewGrid = newGrid.clone();
-      anotherNewGrid.insertTile(new Tile(cells[k], 4));
-      var nextLevel = getBestScore(depth - 1, anotherNewGrid);
-      if (nextLevel["moved"] === true)
-        score += (0.1 * nextLevel["score"]);
+        var newGrid = grid.clone();
+        
+        if(newGrid.move(i) === false)
+            continue;
 
-      anotherNewGrid = newGrid.clone();
-      anotherNewGrid.insertTile(new Tile(cells[k], 2))
-      nextLevel = getBestScore(depth - 1, anotherNewGrid);
-      if (nextLevel["moved"] === true)
-        score += (0.9 * nextLevel["score"]);
+        var newScore = this.expectimax(newGrid, depth - 1, BOARD);
+
+        if (newScore > score)
+        {
+            bestMove = i;
+            score = newScore;
+        }
     }
-    
-    score /= totalCells;
 
-    if (score > maxScore)
-      maxScore = score;
-  }
-
-  if (maxScore === -999999)
-    return {"moved" : false, "score" : maxScore};
-  else
-    return {"moved" : true, "score" : maxScore};
+    return bestMove;
 }
 
-move = ["up", "right", "down", "left"]
-
-GameManager.prototype.getBestMove = function (depth) {
+GameManager.prototype.expectimax = function(grid, depth, agent) {
 
   var self = this;
-  var bestScore = -9999;
-  var bestMove = -1;
-  var moves = [];
-  
-  for (var i = 0; i < 4; i++)
+
+  if (depth == 0)
+    return grid.getScore()
+
+  else if (agent === PLAYER) 
   {
-    var newGrid = self.grid.clone();
-    var nextLevel = newGrid.move(i);
+    var score = Number.MIN_VALUE;
 
-    if (nextLevel === false) {
-      continue;
-    }
-
-    var score = 0;
-    var cells = newGrid.availableCells();
-    var totalCells = cells.length;
-
-    for (var k = 0; k < totalCells; k ++)
+    for (var i = 0; i < 4; i ++)
     {
-      anotherNewGrid = newGrid.clone();
-      anotherNewGrid.insertTile(new Tile(cells[k], 4));
+      var newGrid = grid.clone();
+      var nextLevel = newGrid.move(i);
 
-      var next = getBestScore(depth - 1, anotherNewGrid);
-      if (next["moved"] === true)
-        score += (0.1 * next["score"]);
+      if (nextLevel === false) {
+        continue;
+      }
 
-      anotherNewGrid = newGrid.clone();
-      anotherNewGrid.insertTile(new Tile(cells[k], 2));
-      next = getBestScore(depth - 1, anotherNewGrid);
-      if (next["moved"] === true)
-        score += (0.9 * next["score"]);
+      var newScore = this.expectimax(newGrid, depth - 1, BOARD);
+
+      if (newScore > score)
+        score = newScore;
     }
-  
-    score /= totalCells;
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestMove = i;
-    }
+    return score;
   }
 
-  return bestMove;
+  else if (agent === BOARD)
+  {
+    var score = 0;
+    var cells = grid.availableCells();
+    var totalCells = cells.length;
+
+    for (var i = 0; i < totalCells; i++)
+    {
+      var newGrid = grid.clone();
+      newGrid.insertTile(new Tile(cells[i], 4));
+      var newScore = self.expectimax(newGrid, depth - 1, PLAYER);
+      if (newScore === Number.MIN_VALUE)
+        score += 0;
+      else
+        score += (0.1 * newScore);
+
+      newGrid = grid.clone();
+      newGrid.insertTile(new Tile(cells[i], 2));
+      newScore = self.expectimax(newGrid, depth - 1, PLAYER);
+      if (newScore === Number.MIN_VALUE)
+        score += 0;
+      else
+        score += (0.9 * newScore);
+    }
+
+    score /= totalCells;
+    return score;
+  }
 }
