@@ -9,14 +9,14 @@ window.requestAnimationFrame(function () {
 
 	    	var future = 3;
 
-	    	if (game.grid.availableCells().length <= 5)
+	    	if (game.grid.availableCells().length <= 4)
 	    		future = 4;
 
 			game.move(game.getBestMove(future));
 
 			AI();
 
-	    }, 200);
+	    }, 50);
 	}
 
 	AI();

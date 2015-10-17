@@ -294,11 +294,12 @@ Grid.prototype.getScore = function() {
 
   this.eachCell(function(x, y, tile) {
     if (tile)
-      score += (priority[x][y] * tile.value * tile.value);
+      score += (priority[x][y] * priority[x][y] * tile.value);
   });
 
   var penalty = 0;
-  var directions = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+  // var directions = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+  var directions = [[1, 0], [0, 1], [-1, 0], [0, -1]];
 
   this.eachCell(function(x, y, tile) {
     if (tile)
@@ -311,7 +312,7 @@ Grid.prototype.getScore = function() {
         {
           var neighbour = self.cells[pos["x"]][pos["y"]];
           if (neighbour)
-            penalty += Math.abs(neighbour.value - tile.value);
+            penalty += (Math.abs(neighbour.value - tile.value) * 1);
         }
       }
     }
