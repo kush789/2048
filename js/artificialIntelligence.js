@@ -28,13 +28,13 @@ function getBestScore(depth, grid) {
       anotherNewGrid.insertTile(new Tile(cells[k], 4));
       var nextLevel = getBestScore(depth - 1, anotherNewGrid);
       if (nextLevel["moved"] === true)
-        score += (0.2 * nextLevel["score"]);
+        score += (0.1 * nextLevel["score"]);
 
       anotherNewGrid = newGrid.clone();
       anotherNewGrid.insertTile(new Tile(cells[k], 2))
       nextLevel = getBestScore(depth - 1, anotherNewGrid);
       if (nextLevel["moved"] === true)
-        score += (0.8 * nextLevel["score"]);
+        score += (0.9 * nextLevel["score"]);
     }
     
     score /= totalCells;
@@ -78,13 +78,13 @@ GameManager.prototype.getBestMove = function (depth) {
 
       var next = getBestScore(depth - 1, anotherNewGrid);
       if (next["moved"] === true)
-        score += (0.2 * next["score"]);
+        score += (0.1 * next["score"]);
 
       anotherNewGrid = newGrid.clone();
       anotherNewGrid.insertTile(new Tile(cells[k], 2));
       next = getBestScore(depth - 1, anotherNewGrid);
       if (next["moved"] === true)
-        score += (0.2 * next["score"]);
+        score += (0.9 * next["score"]);
     }
   
     score /= totalCells;

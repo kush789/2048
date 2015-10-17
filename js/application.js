@@ -9,8 +9,8 @@ window.requestAnimationFrame(function () {
 
 	    	var future = 3;
 
-	    	if (game.grid.availableCells().length <= 4)
-	    		future = 4;
+	    	// if (game.grid.availableCells().length <= 4)
+	    	// 	future = 4;
 
 			game.move(game.getBestMove(future));
 

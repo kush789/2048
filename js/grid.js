@@ -294,7 +294,7 @@ Grid.prototype.getScore = function() {
 
   this.eachCell(function(x, y, tile) {
     if (tile)
-      score += (priority[x][y] * priority[x][y] * tile.value);
+      score += (priority[x][y] * tile.value * tile.value);
   });
 
   var penalty = 0;
