@@ -13,7 +13,13 @@ window.requestAnimationFrame(function () {
 	    		future = 6;
 	    	else
 	    		future = 4;
-			game.move(game.getBestMove(game.grid, future));
+
+			if (game.move(game.getBestMove(game.grid, future)) === false)
+			{
+				for (var i = 0; i < 4; i ++)
+					if (game.move(i) === true)
+						break;
+			}
 
 			AI();
 
