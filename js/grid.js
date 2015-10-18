@@ -287,6 +287,11 @@ var priority =     [[ 6,  5,  4,  1],
                     [ 4,  1,  0, -1],
                     [ 1,  0, -1, -2]];
 
+// var priority =     [[ 16,  15,  14,  13],
+//                     [ 9, 10, 11,  12],
+//                     [ 8,  7,  6, 5],
+//                     [ 1, 2, 3 ,4]];
+
 Grid.prototype.getScore = function() {
 
   var self = this;
