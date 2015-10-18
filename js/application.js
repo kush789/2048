@@ -9,7 +9,7 @@ window.requestAnimationFrame(function () {
 
 	    	var future = 0;
 
-	    	if (game.grid.availableCells().length < 4)
+	    	if (game.grid.availableCells().length < 5)
 	    		future = 6;
 	    	else
 	    		future = 4;
