@@ -4,7 +4,7 @@ var PLAYER = 0;
 GameManager.prototype.getBestMove = function(grid, depth)
 {
     var score = Number.MIN_VALUE;
-    var bestMove = -1;
+    var bestMove = 0;
 
     for (var i = 0; i < 4; i ++)
     {
